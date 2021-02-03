@@ -11,26 +11,25 @@
 
 
 
-var express = require("express");
-var app = express();
+const express = require("express");
+const path = require("path");
+const dataService = require("./data-service.js");
+const app = express();
 
-var HTTP_PORT = process.env.PORT || 8080;
-
-function onHttpStart(){
-    console.log("Express http server listening on port");
-}
 
 app.use(express.static('public')); // "static" middleware
 
 app.get("/", function(req, res){
-    res.send("<a href='views/home.html'></a>");
+    // res.sendFile("/Users/hayeoncho/Desktop/4semester/web322/assignments/web322-app/views/home.html");
+    res.sendFile(path.join(__dirname, "views/home.html"));
 });
 
 app.get("/about", function(req, res){
-    res.send("<a href='views/about.html'></a>")
+    res.sendFile(path.join(__dirname, "views/about.html"));
 })
 
 app.get("/employees", function(req, res){
+    dataService.getAllEmployees();
     res.json()
 })
 
@@ -43,3 +42,28 @@ app.get("/departments", function(req, res){
 })
 
 // no matching route
+// app.use(function(err, req, res, next){
+//     console.log("error");
+//     res.status(400).send("Page Not Found");
+//     // // res.sendFile(path.join(__dirname, "views/notFound.html"));
+//     // next();
+// })
+
+// app.use((req,res)=>{
+//     res.status(404).send("NO Matching route"); 
+// })
+
+app.use(function(req,res){
+    // res.status(404).send("No matching route");
+    res.sendFile(path.join(__dirname, "views/notFound.html"));
+}) 
+
+
+var HTTP_PORT = process.env.PORT || 8080;
+
+function onHttpStart(){
+    dataService.initialize();
+    console.log(`Express http server listening on port, ${HTTP_PORT}`);
+}
+
+app.listen(HTTP_PORT, onHttpStart);
