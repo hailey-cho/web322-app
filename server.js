@@ -29,17 +29,34 @@ app.get("/about", function(req, res){
 })
 
 app.get("/employees", function(req, res){
-    dataService.getAllEmployees();
-    res.json()
-})
+    dataService.getAllEmployees().then((data)=>{
+        res.json(data);
+    }).catch(err =>{
+        res.json({
+            message: err
+        });
+    });
+});
 
 app.get("/managers", function(req, res){
-    res.send("TODO: get all employees who have isManager==true");
-})
+    dataService.getManagers().then((data)=>{
+        res.json(data);
+    }).catch(err => {
+        res.json({
+            message: err
+        });
+    });
+});
 
 app.get("/departments", function(req, res){
-    res.json()
-})
+    dataService.getDepartments().then((data)=>{
+        res.json(data);
+    }).catch(err => {
+        res.json({
+            message: err
+        })
+    });
+});
 
 // no matching route
 // app.use(function(err, req, res, next){
@@ -55,15 +72,22 @@ app.get("/departments", function(req, res){
 
 app.use(function(req,res){
     // res.status(404).send("No matching route");
-    res.sendFile(path.join(__dirname, "views/notFound.html"));
+    res.status(404).sendFile(path.join(__dirname, "views/notFound.html"));
 }) 
 
 
 var HTTP_PORT = process.env.PORT || 8080;
 
 function onHttpStart(){
-    dataService.initialize();
     console.log(`Express http server listening on port, ${HTTP_PORT}`);
 }
 
-app.listen(HTTP_PORT, onHttpStart);
+
+dataService.initialize()
+    .then(function(){ //resolve
+        app.listen(HTTP_PORT, onHttpStart);
+    }).catch(function(err){ //reject
+        console.log("Failed to start " + err);
+    });
+
+    
