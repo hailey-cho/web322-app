@@ -4,7 +4,7 @@ let departments = [];
 
 module.exports.initialize = function(){
     return new Promise((resolve, reject)=>{
-        fs.readFile('./data/employees.json', (err, data)=>{ //callback function 
+        fs.readFile('./data/employees.json', (err, data)=>{
             if(err){
                 return reject("Unable to read file");
             }
@@ -35,12 +35,6 @@ module.exports.getAllEmployees = function(){
 
 module.exports.getManagers = function(){
     return new Promise(function(resolve, reject){
-        // var managers = [];
-        // for(let i = 0; i < employees.length; i++){
-        //     if(employees[i].isManager == true){
-        //         managers.push(employees[i]);
-        //     }
-        // }
         const managers = employees.filter(employee => employee.isManager);
         if(managers.length === 0){
             reject("No results returned");
@@ -61,8 +55,3 @@ module.exports.getDepartments = function(){
         }
     })
 }
-
-
-// module.exports = {
-//     initialize, getAllEmployees, getManagers, getDepartments
-// }
