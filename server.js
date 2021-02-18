@@ -1,11 +1,11 @@
 /*********************************************************************************
-*  WEB322 – Assignment 02
+*  WEB322 – Assignment 03
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: _____Hayeon Cho______ Student ID: ___121074199___ Date: ___February 5th 2021___
+*  Name: _____Hayeon Cho______ Student ID: ___121074199___ Date: ___February 18th 2021___
 *
-*  Online (Heroku) Link: ________https://salty-waters-37475.herokuapp.com/___________
+*  Online (Heroku) Link: ________https://salty-waters-37475.herokuapp.com/__________
 *
 ********************************************************************************/ 
 
