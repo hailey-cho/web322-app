@@ -68,3 +68,55 @@ module.exports.getDepartments = function(){
         }
     })
 }
+
+module.exports.getEmployeesByStatus = function(status){
+    return new Promise((resolve, reject)=>{
+        const employeesByStatus = employees.filter(e => e.status === status);
+        if(employeesByStatus.length === 0){
+            reject("No results retured");
+        }
+        else{ 
+            resolve(employeesByStatus);
+        }
+    
+    });
+}
+
+module.exports.getEmployeesByDepartment = function(department){
+    return new Promise((resolve, reject)=>{
+        const getEmployeesByDepartment = employees.filter(e => e.department === Number(department));
+        if(getEmployeesByDepartment.length === 0){
+            reject("No results retured");
+        }
+        else{ 
+            resolve(getEmployeesByDepartment);
+        }
+    
+    });
+}
+
+module.exports.getEmployeesByManager = function(manager){
+    return new Promise((resolve, reject)=>{
+        const employeesByManagerNum = employees.filter(e => e.employeeManagerNum === Number(manager));
+        if(employeesByManagerNum.length === 0){
+            reject("No results retured");
+        }
+        else{ 
+            resolve(employeesByManagerNum);
+        }
+    
+    });
+}
+
+module.exports.getEmployeeByNum = function(num){
+    return new Promise((resolve, reject)=>{
+        const employeeNum = employees.filter(e => e.employeeNum === Number(num));
+        if(employeeNum.length === 0){
+            reject("No results retured");
+        }
+        else{ 
+            resolve(employeeNum);
+        }
+    
+    });
+}
