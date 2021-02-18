@@ -45,6 +45,19 @@ module.exports.getManagers = function(){
     });
 }
 
+module.exports.addEmployee = function(employeeData){
+    return new Promise(function(resolve, reject){
+        if(employeeData.isManager === undefined){
+            employeeData.isManager = false;
+        }
+        employeeData.employeeNum = employees.length + 1;
+        employees.push(employeeData);
+        resolve();
+    
+    })
+}
+
+
 module.exports.getDepartments = function(){
     return new Promise(function(resolve, reject){
         if(departments.length === 0){

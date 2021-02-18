@@ -10,6 +10,7 @@
 ********************************************************************************/ 
 
 
+const bodyParser = require("body-parser");
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
@@ -27,6 +28,10 @@ const upload = multer({storage}); // storage: storage
 
 app.use(express.static('public')); // "static" middleware
 
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+
 app.get("/", function(req, res){
     res.sendFile(path.join(__dirname, "views/home.html"));
 });
@@ -36,14 +41,58 @@ app.get("/about", function(req, res){
 })
 
 app.get("/employees", function(req, res){
-    dataService.getAllEmployees().then((data)=>{
+    const {
+        status, department, manager
+    } = req.query;
+    if(status){
+        dataService.getEmployeesByStatus(status).then((data)=>{
+            res.json(data);
+        }).catch(err =>{
+            res.json({
+                message: err
+            });
+        });
+    }
+    else if(department){
+        dataService.getEmployeesByDepartment(department).then((data)=>{
+            res.json(data);
+        }).catch(err =>{
+            res.json({
+                message: err
+            });
+        });
+    }
+    else if(manager){
+        dataService.getEmployeesByManager(manager).then((data)=>{
+            res.json(data);
+        }).catch(err =>{
+            res.json({
+                message: err
+            });
+        });
+    }
+    else{
+        dataService.getAllEmployees().then((data)=>{
+            res.json(data);
+        }).catch(err =>{
+            res.json({
+                message: err
+            });
+        });
+    }
+});
+
+
+app.get("/employee/:value", function(req, res){
+    const num = req.params.value;
+    dataService.getEmployeeByNum(num).then((data)=>{
         res.json(data);
     }).catch(err =>{
         res.json({
             message: err
         });
     });
-});
+})
 
 app.get("/managers", function(req, res){
     dataService.getManagers().then((data)=>{
@@ -68,6 +117,13 @@ app.get("/departments", function(req, res){
 app.get("/employees/add", function(req, res){
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
 });
+
+app.post("/employees/add", function(req, res){
+    dataService.addEmployee(req.body).then(()=>{
+        res.redirect("/employees");
+    })
+    
+})
 
 app.get("/images/add", function(req, res){
     res.sendFile(path.join(__dirname, "/views/addImage.html"));
