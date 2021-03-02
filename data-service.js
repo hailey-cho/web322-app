@@ -69,6 +69,7 @@ module.exports.getDepartments = function(){
     })
 }
 
+//query Employees
 module.exports.getEmployeesByStatus = function(status){
     return new Promise((resolve, reject)=>{
         const employeesByStatus = employees.filter(e => e.status === status);

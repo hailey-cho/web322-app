@@ -16,7 +16,12 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const dataService = require("./data-service.js");
+const exphbs = require("express-handlebars");
 const app = express();
+
+app.engine('.hbs', exphbs({extname: ".hbs"}));
+app.set('view engine', '.hbs');
+
 
 const storage = multer.diskStorage({
     destination: "./public/images/uploaded",
@@ -31,13 +36,19 @@ app.use(express.static('public')); // "static" middleware
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.use(function(req,res,next){
+    let route = req.baseUrl + req.path;
+    app.locals.activeRoute = (route == "/") ? "/" : route.replace(/\/$/, "");
+    next();
+});
+
 
 app.get("/", function(req, res){
-    res.sendFile(path.join(__dirname, "views/home.html"));
+    res.render(path.join(__dirname, "views/home.html"));
 });
 
 app.get("/about", function(req, res){
-    res.sendFile(path.join(__dirname, "views/about.html"));
+    res.render(path.join(__dirname, "views/about.html"));
 })
 
 app.get("/employees", function(req, res){
@@ -115,7 +126,7 @@ app.get("/departments", function(req, res){
 });
 
 app.get("/employees/add", function(req, res){
-    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+    res.render(path.join(__dirname, "/views/addEmployee.html"));
 });
 
 app.post("/employees/add", function(req, res){
@@ -126,7 +137,7 @@ app.post("/employees/add", function(req, res){
 })
 
 app.get("/images/add", function(req, res){
-    res.sendFile(path.join(__dirname, "/views/addImage.html"));
+    res.render(path.join(__dirname, "/views/addImage.html"));
 });
 
 app.post("/images/add", upload.single("imageFile"), function(req, res){
@@ -163,4 +174,18 @@ dataService.initialize()
         console.log("Failed to start " + err);
     });
 
+navLink: function(url, options){
+    return '<li' + 
+        ((url == app.locals.activeRoute) ? ' class="active" ' : '') + 
+        '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+}
     
+equal: function (lvalue, rvalue, options) {
+    if (arguments.length < 3)
+        throw new Error("Handlebars Helper equal needs 2 parameters");
+    if (lvalue != rvalue) {
+        return options.inverse(this);
+    } else {
+        return options.fn(this);
+    }
+}
