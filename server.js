@@ -19,7 +19,27 @@ const dataService = require("./data-service.js");
 const exphbs = require("express-handlebars");
 const app = express();
 
-app.engine('.hbs', exphbs({extname: ".hbs"}));
+app.engine('.hbs', exphbs({
+    extname: ".hbs", 
+    defaultLayout: "main",
+    helpers: {
+        navLink: function(url, options){
+            return '<li' + 
+                ((url == app.locals.activeRoute) ? ' class="active" ' : '') + 
+                '><a href="' + url + '">' + options.fn(this) + '</a></li>';
+        },
+        equal: function (lvalue, rvalue, options) {
+            if (arguments.length < 3)
+                throw new Error("Handlebars Helper equal needs 2 parameters");
+            if (lvalue != rvalue) {
+                return options.inverse(this);
+            } else {
+                return options.fn(this);
+            }
+        }        
+        
+    }
+}));
 app.set('view engine', '.hbs');
 
 
@@ -44,12 +64,12 @@ app.use(function(req,res,next){
 
 
 app.get("/", function(req, res){
-    res.render(path.join(__dirname, "views/home.html"));
+    res.render("home");
 });
 
 app.get("/about", function(req, res){
-    res.render(path.join(__dirname, "views/about.html"));
-})
+    res.render("about");
+});
 
 app.get("/employees", function(req, res){
     const {
@@ -126,7 +146,7 @@ app.get("/departments", function(req, res){
 });
 
 app.get("/employees/add", function(req, res){
-    res.render(path.join(__dirname, "/views/addEmployee.html"));
+    res.render("addEmployee");
 });
 
 app.post("/employees/add", function(req, res){
@@ -137,7 +157,7 @@ app.post("/employees/add", function(req, res){
 })
 
 app.get("/images/add", function(req, res){
-    res.render(path.join(__dirname, "/views/addImage.html"));
+    res.render("addImage");
 });
 
 app.post("/images/add", upload.single("imageFile"), function(req, res){
@@ -145,14 +165,7 @@ app.post("/images/add", upload.single("imageFile"), function(req, res){
 });
 
 app.get("/images", function(req, res){
-    fs.readdir("./public/images/uploaded", function(err, items){
-        if(err){
-            throw err;
-        } 
-        res.json({
-            images: items
-        })
-    })
+    res.render("images"); 
 })
 
 app.use(function(req,res){
@@ -174,18 +187,4 @@ dataService.initialize()
         console.log("Failed to start " + err);
     });
 
-navLink: function(url, options){
-    return '<li' + 
-        ((url == app.locals.activeRoute) ? ' class="active" ' : '') + 
-        '><a href="' + url + '">' + options.fn(this) + '</a></li>';
-}
-    
-equal: function (lvalue, rvalue, options) {
-    if (arguments.length < 3)
-        throw new Error("Handlebars Helper equal needs 2 parameters");
-    if (lvalue != rvalue) {
-        return options.inverse(this);
-    } else {
-        return options.fn(this);
-    }
-}
+
