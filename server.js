@@ -212,5 +212,3 @@ dataService.initialize()
     }).catch(function(err){ 
         console.log("Failed to start " + err);
     });
-
-
