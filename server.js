@@ -3,7 +3,7 @@
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: _____Hayeon Cho______ Student ID: ___121074199___ Date: ___February 18th 2021___
+*  Name: _____Hayeon Cho______ Student ID: ___121074199___ Date: ___March 11 2021___
 *
 *  Online (Heroku) Link: ________https://salty-waters-37475.herokuapp.com/__________
 *
@@ -77,36 +77,44 @@ app.get("/employees", function(req, res){
     } = req.query;
     if(status){
         dataService.getEmployeesByStatus(status).then((data)=>{
-            res.json(data);
+            res.render("employees", {
+                employees: data
+            })
         }).catch(err =>{
-            res.json({
+            res.render("employees", {
                 message: err
             });
         });
     }
     else if(department){
         dataService.getEmployeesByDepartment(department).then((data)=>{
-            res.json(data);
+            res.render("employees", {
+                employees: data
+            });
         }).catch(err =>{
-            res.json({
+            res.render("employees", {
                 message: err
             });
         });
     }
     else if(manager){
         dataService.getEmployeesByManager(manager).then((data)=>{
-            res.json(data);
+            res.render("employees", {
+                employees: data
+            });
         }).catch(err =>{
-            res.json({
+            res.render("employees", {
                 message: err
             });
         });
     }
     else{
         dataService.getAllEmployees().then((data)=>{
-            res.json(data);
+            res.render("employees", {
+                employees: data
+            });
         }).catch(err =>{
-            res.json({
+            res.render("employees", {
                 message: err
             });
         });
@@ -117,13 +125,22 @@ app.get("/employees", function(req, res){
 app.get("/employee/:value", function(req, res){
     const num = req.params.value;
     dataService.getEmployeeByNum(num).then((data)=>{
-        res.json(data);
+        res.render("employee", {
+            employee: data
+        });
     }).catch(err =>{
-        res.json({
+        res.render("employee",{
             message: err
         });
     });
 })
+
+app.post("/employee/update", (req, res) => {
+    dataService.updateEmployee(req.body).then(()=>{
+        res.redirect("/employees");
+    })
+});
+
 
 app.get("/managers", function(req, res){
     dataService.getManagers().then((data)=>{
@@ -137,9 +154,11 @@ app.get("/managers", function(req, res){
 
 app.get("/departments", function(req, res){
     dataService.getDepartments().then((data)=>{
-        res.json(data);
+        res.render("departments", {
+            departments: data
+        });
     }).catch(err => {
-        res.json({
+        res.render("departments", {
             message: err
         })
     });
@@ -165,7 +184,14 @@ app.post("/images/add", upload.single("imageFile"), function(req, res){
 });
 
 app.get("/images", function(req, res){
-    res.render("images"); 
+    fs.readdir('public/images/uploaded',(err,files)=>{
+        if(err){
+            throw err;
+        }
+        res.render("images", {
+            images: files
+        }); 
+    });
 })
 
 app.use(function(req,res){

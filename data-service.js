@@ -111,7 +111,7 @@ module.exports.getEmployeesByManager = function(manager){
 
 module.exports.getEmployeeByNum = function(num){
     return new Promise((resolve, reject)=>{
-        const employeeNum = employees.filter(e => e.employeeNum === Number(num));
+        const employeeNum = employees.find(e => e.employeeNum === Number(num));
         if(employeeNum.length === 0){
             reject("No results retured");
         }
@@ -120,4 +120,25 @@ module.exports.getEmployeeByNum = function(num){
         }
     
     });
+}
+
+module.exports.updateEmployee = function(employeeData){
+    return new Promise((resolve, reject)=>{
+        const employee = employees.find(e => e.SSN === employeeData.SSN);
+        if(employee){
+
+            employee.firstName = employeeData.firstName;
+            employee.lastName = employeeData.lastName;
+            employee.email = employeeData.email;
+            employee.addressStreet = employeeData.addressStreet;
+            employee.addressCity = employeeData.addressCity;
+            employee.addressState = employeeData.addressState;
+            employee.addressPostal = employeeData.addressPostal;
+            employee.isManager = employeeData.isManager;
+            employee.status = employeeData.status;
+            employee.department = employeeData.department;
+            resolve();
+        }       
+    
+    })
 }
