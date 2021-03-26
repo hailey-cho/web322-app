@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h2>{{employee.firstName}} {{ employee.lastName}} - Employee: {{ employee.employeeNum}}</h2>
+        <h2>{{employee.firstName}} {{employee.lastName}} - Employee: {{employee.employeeNum}}</h2>
         <hr />
         <form method="post" action="/employee/update" novalidate>
             <fieldset>
@@ -100,69 +100,12 @@
                         <div class="form-group">
                             <label for="department">Department</label>
                                 <select class="form-control" name="department" id="department">
-                                    {{#equal employee.department "1"}}
-                                    <option value="1" selected >Creative Services</option>
-                                    <option value="2" >Product Development</option>
-                                    <option value="3" >Marketing</option>
-                                    <option value="4" >Strategic Planning</option>
-                                    <option value="5" >Accounting</option>
-                                    <option value="6" >Human Resources</option>
-                                    <option value="7" >Quality Analysis</option>
-                                    {{/equal}}
-                                    {{#equal employee.department "2"}}
-                                    <option value="1" >Creative Services</option>
-                                    <option value="2" selected >Product Development</option>
-                                    <option value="3" >Marketing</option>
-                                    <option value="4" >Strategic Planning</option>
-                                    <option value="5" >Accounting</option>
-                                    <option value="6" >Human Resources</option>
-                                    <option value="7" >Quality Analysis</option>
-                                    {{/equal}}
-                                    {{#equal employee.department "3"}}
-                                    <option value="1" >Creative Services</option>
-                                    <option value="2" >Product Development</option>
-                                    <option value="3"selected >Marketing</option>
-                                    <option value="4" >Strategic Planning</option>
-                                    <option value="5" >Accounting</option>
-                                    <option value="6" >Human Resources</option>
-                                    <option value="7" >Quality Analysis</option>
-                                    {{/equal}}
-                                    {{#equal employee.department "4"}}
-                                    <option value="1" >Creative Services</option>
-                                    <option value="2" >Product Development</option>
-                                    <option value="3" >Marketing</option>
-                                    <option value="4" selected >Strategic Planning</option>
-                                    <option value="5" >Accounting</option>
-                                    <option value="6" >Human Resources</option>
-                                    <option value="7" >Quality Analysis</option>
-                                    {{/equal}}
-                                    {{#equal employee.department "5"}}
-                                    <option value="1" >Creative Services</option>
-                                    <option value="2" >Product Development</option>
-                                    <option value="3" >Marketing</option>
-                                    <option value="4" >Strategic Planning</option>
-                                    <option value="5" selected >Accounting</option>
-                                    <option value="6" >Human Resources</option>
-                                    <option value="7" >Quality Analysis</option>
-                                    {{/equal}}
-                                    {{#equal employee.department "6"}}
-                                    <option value="1" selected >Creative Services</option>
-                                    <option value="2" >Product Development</option>
-                                    <option value="3" >Marketing</option>
-                                    <option value="4" >Strategic Planning</option>
-                                    <option value="5" >Accounting</option>
-                                    <option value="6" selected >Human Resources</option>
-                                    <option value="7" >Quality Analysis</option>
-                                    {{/equal}}
-                                    {{#equal employee.department "7"}}
-                                    <option value="1" >Creative Services</option>
-                                    <option value="2" >Product Development</option>
-                                    <option value="3" >Marketing</option>
-                                    <option value="4" >Strategic Planning</option>
-                                    <option value="5" >Accounting</option>
-                                    <option value="6" >Human Resources</option>
-                                    <option value="7" selected >Quality Analysis</option>
-                                    {{/equal}}
+                                    {{#if departments}}
+                                    <option value="" >Select Department</option>
+                                    {{#each departments}}
+                                    <option value="{{departmentId}}" {{#if selected}} selected {{/if}} >{{departmentName}}</option>
+                                    {{/each}}
+                                    {{/if}}
                             </select>
                         </div>
                     </div>
