@@ -4,11 +4,11 @@
             <h1>{{department.departmentName}} - department: {{department.departmentId}}</h1>
             <br>
             <form method="post" action="/department/update">
-                <input class="form-control" id="departmentId" name="departmentId" type="hidden" value="{{department.departmentId}}">
+                <input id="departmentId" name="departmentId" type="hidden" value="{{department.departmentId}}">
                 <fieldset>
                     <legend></legend>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="departmentName">Department Name</label>
                                 <input class="form-control" id="departmentName" name="departmentName" type="text" value="{{department.departmentName}}">
