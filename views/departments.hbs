@@ -11,6 +11,7 @@
             <tr>
                 <th>Department Number</th>
                 <th>Department Name</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -18,6 +19,8 @@
                 <tr>    
                     <td><a href="/employees?department={{departmentId}}">{{departmentId}}</a></td>
                     <td><a href="/department/{{departmentId}}">{{departmentName}}</a></td>
+                    <td><a href="/department/delete/{{departmentId}}" class="btn btn-danger">remove</a></td>
+
                 </tr>        
             {{/each}}
             </tbody>

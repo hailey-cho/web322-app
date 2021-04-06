@@ -1,9 +1,9 @@
 /*********************************************************************************
-*  WEB322 – Assignment 04
+*  WEB322 – Assignment 06
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-*  Name: _____Hayeon Cho______ Student ID: ___121074199___ Date: ____
+*  Name: _____Hayeon Cho______ Student ID: ___121074199___ Date: ___April 6 2021_
 *
 *  Online (Heroku) Link: ________https://salty-waters-37475.herokuapp.com/__________
 *
@@ -267,7 +267,6 @@ app.get("/managers", ensureLogin, function(req, res){
 
 app.get("/departments", ensureLogin, function(req, res){
     dataService.getDepartments().then((data)=>{
-        data = data.map(e => e.dataValues);
         if(data.length > 0){
             res.render("departments", {
                 departments: data
@@ -285,7 +284,7 @@ app.get("/departments", ensureLogin, function(req, res){
 });
 
 app.get("/departments/add", function(req, res) {
-    ds.getDepartments().then((data) => {
+    dataService.getDepartments().then((data) => {
         res.render("addDepartment", {departments: data});
     }).catch((err)=>{
         res.render("addDepartment", {departments: []});
@@ -293,7 +292,7 @@ app.get("/departments/add", function(req, res) {
 });
 
 app.post("/departments/add", (req, res) => {
-    ds.addDepartment(req.body).then(()=>{
+    dataService.addDepartment(req.body).then(()=>{
         res.redirect("/departments");
     }).catch((rejectMsg) => {
         res.status(500).send("Unable to add department");
@@ -301,7 +300,7 @@ app.post("/departments/add", (req, res) => {
 });
 
 app.post("/department/update", (req, res) => {
-    ds.updateDepartment(req.body)
+    dataService.updateDepartment(req.body)
     .then(() => { 
         res.redirect("/departments");
     })
@@ -314,7 +313,6 @@ app.post("/department/update", (req, res) => {
 app.get("/employees/add", ensureLogin, function(req, res){
     dataService.getDepartments()
         .then(data =>{
-            data = data.map(e => e.dataValues);
             res.render("addEmployee", {departments: data});
         })
         .catch(err => {
